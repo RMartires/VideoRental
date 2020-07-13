@@ -3,6 +3,8 @@ import { Modal, Button, Form, InputGroup } from "react-bootstrap";
 import { Dropdown, Overlay, Tooltip, Toast } from "react-bootstrap";
 import { Container, Row, Col } from "react-bootstrap";
 import axios from "axios";
+import links from "../link";
+var link = links.link();
 
 export default function MovieModal(props) {
   const [showSaved, setShowSaved] = useState(false);
@@ -27,7 +29,7 @@ export default function MovieModal(props) {
   const changetype = (newtype, id) => {
     console.log(newtype);
     axios({
-      url: "http://localhost:1337/video/" + id,
+      url: link + "/video/" + id,
       method: "PATCH",
       data: { type: newtype },
     })
@@ -70,7 +72,7 @@ export default function MovieModal(props) {
     try {
       if (!usebp) {
         var res = await axios({
-          url: "http://localhost:1337/user/updatebp/",
+          url: link + "/user/updatebp/",
           method: "PATCH",
           data: {
             userId: customerId,
@@ -79,7 +81,7 @@ export default function MovieModal(props) {
         });
       } else {
         var res = await axios({
-          url: "http://localhost:1337/user/" + customerId,
+          url: link + "/user/" + customerId,
           method: "PATCH",
           data: {
             bonusPoints: getcurrentbp(bp),
@@ -87,7 +89,7 @@ export default function MovieModal(props) {
         });
       }
       var res = await axios({
-        url: "http://localhost:1337/myrentals/",
+        url: link + "/myrentals/",
         method: "POST",
         data: {
           owner: customerId,
@@ -188,7 +190,7 @@ export default function MovieModal(props) {
                   onChange={(e) => {
                     var id = e.target.value;
                     setCustomerId(id);
-                    fetch("http://localhost:1337/user/" + id)
+                    fetch(link + "/user/" + id)
                       .then((res) => {
                         return res.json();
                       })

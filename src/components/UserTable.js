@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import { Table, Modal } from "react-bootstrap";
 import { Container, Row, Col } from "react-bootstrap";
+import links from "../link";
+var link = links.link();
 
 export default function UserTable(props) {
   const [show, setShow] = useState(false);
@@ -11,7 +13,7 @@ export default function UserTable(props) {
   //const handleShow = () => setShow(true);
 
   const getmyrentals = (id) => {
-    fetch("http://localhost:1337/getmyrentals/?userId=" + id, {
+    fetch(link + "/getmyrentals/?userId=" + id, {
       method: "GET",
     })
       .then((res) => {

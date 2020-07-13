@@ -3,6 +3,8 @@ import { Container, Row, Col } from "react-bootstrap";
 import { Navbar, Nav } from "react-bootstrap";
 import CoustomTable from "../components/CoustomTable";
 import UserTable from "../components/UserTable";
+import links from "../link";
+var link = links.link();
 
 export default class AdminInterface extends Component {
   state = { list: [], type: "video" };
@@ -12,7 +14,7 @@ export default class AdminInterface extends Component {
   }
 
   updatelist(type) {
-    fetch("http://localhost:1337/" + type)
+    fetch(link + `/${type}`)
       .then((res) => {
         return res.json();
       })
