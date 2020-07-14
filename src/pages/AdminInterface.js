@@ -13,8 +13,10 @@ export default class AdminInterface extends Component {
     this.updatelist("video");
   }
 
-  updatelist(type) {
-    this.setState({ loading: true });
+  updatelist(type, dontspin) {
+    if (!dontspin) {
+      this.setState({ loading: true });
+    }
     fetch(link + `/${type}`)
       .then((res) => {
         return res.json();

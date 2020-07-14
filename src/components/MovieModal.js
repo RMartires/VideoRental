@@ -48,8 +48,9 @@ export default function MovieModal(props) {
   };
 
   function showRented() {
-    props.setShow(false);
+    handleClose();
     setRented(true);
+    props.updatelist("video", true);
     setTimeout(() => {
       setRented(false);
     }, 1500);
@@ -104,6 +105,13 @@ export default function MovieModal(props) {
           price: getprice(days, props.item.type),
           paid: usebp ? 0 : getprice(days, props.item.type),
           title: props.item.title,
+        },
+      });
+      var res = await axios({
+        url: link + "/video/" + props.item.id,
+        method: "PATCH",
+        data: {
+          stock: props.item.stock - 1,
         },
       });
 
@@ -270,14 +278,17 @@ export default function MovieModal(props) {
                   onClick={Rent}
                   disabled={loading}
                 >
-                  {loading?<Spinner
-                    as="span"
-                    animation="border"
-                    size="sm"
-                    role="status"
-                    aria-hidden="true"
-                  />:''}
-                  
+                  {loading ? (
+                    <Spinner
+                      as="span"
+                      animation="border"
+                      size="sm"
+                      role="status"
+                      aria-hidden="true"
+                    />
+                  ) : (
+                    ""
+                  )}
                   Rent {usebp ? 0 : getprice(days, props.item.type)}$
                 </Button>
               </Col>
