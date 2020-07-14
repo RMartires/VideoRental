@@ -40,7 +40,7 @@ export default function MovieModal(props) {
         setTimeout(() => {
           setShowSaved(false);
         }, 800);
-        props.updatelist("video");
+        props.updatelist("video", true);
       })
       .catch((err) => {
         console.log(err);
