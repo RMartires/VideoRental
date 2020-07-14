@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Table, Modal } from "react-bootstrap";
+import { Table, Modal, Spinner } from "react-bootstrap";
 import { Container, Row, Col } from "react-bootstrap";
 import links from "../link";
 var link = links.link();
@@ -8,11 +8,13 @@ export default function UserTable(props) {
   const [show, setShow] = useState(false);
   const [user, setUser] = useState({});
   const [myrentals, setMyrentals] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   const handleClose = () => setShow(false);
   //const handleShow = () => setShow(true);
 
   const getmyrentals = (id) => {
+    setLoading(true);
     fetch(link + "/getmyrentals/?userId=" + id, {
       method: "GET",
     })
@@ -20,6 +22,7 @@ export default function UserTable(props) {
         return res.json();
       })
       .then((resdata) => {
+        setLoading(false);
         setMyrentals(resdata);
       });
   };
@@ -68,18 +71,27 @@ export default function UserTable(props) {
               <Col style={{ color: "white", textAlign: "left" }}>
                 <h5>Rentals</h5>
                 <div>
-                  {myrentals.map((item) => {
-                    return (
-                      <div style={{ display: "bloack" }}>
-                        <hr style={{ backgroundColor: "white" }} />
-                        <h6>title: {item.title}</h6>
-                        <h6>issued: {item.issueed}</h6>
-                        <h6>expiry: {item.expiry}</h6>
-                        <h6>price: {item.price}$</h6>
-                        <h6>paid {item.paid}$</h6>
-                      </div>
-                    );
-                  })}
+                  {loading ? (
+                    <Spinner animation="border" role="status"></Spinner>
+                  ) : (
+                    myrentals.map((item) => {
+                      return (
+                        <div style={{ display: "bloack" }}>
+                          <hr style={{ backgroundColor: "white" }} />
+                          <h6>title: {item.title}</h6>
+                          <h6>issued: {item.issueed}</h6>
+                          <h6>expiry: {item.expiry}</h6>
+                          <h6>price: {item.price}$</h6>
+                          <h6>
+                            paid{" "}
+                            {item.paid == 0
+                              ? " via bonusPoints (25)"
+                              : item.paid + "$"}{" "}
+                          </h6>
+                        </div>
+                      );
+                    })
+                  )}
                 </div>
               </Col>
             </Row>

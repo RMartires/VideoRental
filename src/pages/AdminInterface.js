@@ -1,25 +1,26 @@
 import React, { Component } from "react";
 import { Container, Row, Col } from "react-bootstrap";
-import { Navbar, Nav } from "react-bootstrap";
+import { Navbar, Nav, Spinner } from "react-bootstrap";
 import CoustomTable from "../components/CoustomTable";
 import UserTable from "../components/UserTable";
 import links from "../link";
 var link = links.link();
 
 export default class AdminInterface extends Component {
-  state = { list: [], type: "video" };
+  state = { list: [], type: "video", loading: true };
 
   componentDidMount() {
     this.updatelist("video");
   }
 
   updatelist(type) {
+    this.setState({ loading: true });
     fetch(link + `/${type}`)
       .then((res) => {
         return res.json();
       })
       .then((resdata) => {
-        this.setState({ list: resdata, type: type });
+        this.setState({ list: resdata, type: type, loading: false });
       });
   }
 
@@ -64,11 +65,15 @@ export default class AdminInterface extends Component {
             </Nav.Link>
           </Nav>
         </Navbar>
-        <Container fluid>
-          <Row style={{ marginTop: "30px" }}>
-            <Col>{changeTable()}</Col>
-          </Row>
-        </Container>
+        {this.state.loading ? (
+          <Spinner animation="border" role="status"></Spinner>
+        ) : (
+          <Container fluid>
+            <Row style={{ marginTop: "30px" }}>
+              <Col>{changeTable()}</Col>
+            </Row>
+          </Container>
+        )}
       </div>
     );
   }
