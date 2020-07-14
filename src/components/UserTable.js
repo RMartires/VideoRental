@@ -58,12 +58,18 @@ export default function UserTable(props) {
           style={{
             backgroundColor: "#0E0E0E",
             color: "white",
-            display: "block",
           }}
+          closeButton
         >
-          <h5>{"Name :" + user.name}</h5>
-          <h5>{"ID: " + user.id}</h5>
-          <h5>{"Bonus points :" + user.bonusPoints}</h5>
+          <div
+            style={{
+              display: "block",
+            }}
+          >
+            <h5>{"Name :" + user.name}</h5>
+            <h5>{"ID: " + user.id}</h5>
+            <h5>{"Bonus points :" + user.bonusPoints}</h5>
+          </div>
         </Modal.Header>
         <Modal.Body style={{ backgroundColor: "#0E0E0E", textAlign: "center" }}>
           <Container>

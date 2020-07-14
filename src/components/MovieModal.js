@@ -1,5 +1,5 @@
 import React, { useState, useRef } from "react";
-import { Modal, Button, Form, InputGroup } from "react-bootstrap";
+import { Modal, Button, Form, InputGroup, Spinner } from "react-bootstrap";
 import { Dropdown, Overlay, Tooltip, Toast } from "react-bootstrap";
 import { Container, Row, Col } from "react-bootstrap";
 import axios from "axios";
@@ -15,6 +15,7 @@ export default function MovieModal(props) {
   const [bp, setBp] = useState(undefined);
   const [usebp, setUsebp] = useState(false);
   const target = useRef(null);
+  const [loading, setLoading] = useState(false);
 
   const handleClose = () => {
     setCustomerId(undefined);
@@ -69,6 +70,10 @@ export default function MovieModal(props) {
   }
 
   async function Rent() {
+    if (days < 1) {
+      return;
+    }
+    setLoading(true);
     try {
       if (!usebp) {
         var res = await axios({
@@ -102,8 +107,10 @@ export default function MovieModal(props) {
         },
       });
 
+      setLoading(false);
       showRented();
     } catch (err) {
+      setLoading(false);
       setError("Coustomer does not exist");
     }
   }
@@ -211,8 +218,8 @@ export default function MovieModal(props) {
                     type="number"
                     style={{ width: "60px" }}
                     onChange={(e) => {
-                      if (e.target.value > 99 || e.target.value < 1) {
-                        setDays(1);
+                      if (e.target.value > 99) {
+                        setDays(99);
                       } else {
                         setDays(e.target.value);
                       }
@@ -261,7 +268,16 @@ export default function MovieModal(props) {
                   variant="success"
                   style={{ marginTop: "50px" }}
                   onClick={Rent}
+                  disabled={loading}
                 >
+                  {loading?<Spinner
+                    as="span"
+                    animation="border"
+                    size="sm"
+                    role="status"
+                    aria-hidden="true"
+                  />:''}
+                  
                   Rent {usebp ? 0 : getprice(days, props.item.type)}$
                 </Button>
               </Col>
